@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.quiz.ui.auth.LoginFragment"
+        android:label="Login">
+        <action
+            android:id="@+id/action_login_to_admin"
+            app:destination="@id/adminDashboardFragment" />
+        <action
+            android:id="@+id/action_login_to_player"
+            app:destination="@id/playerDashboardFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminDashboardFragment"
+        android:name="com.example.quiz.ui.admin.AdminDashboardFragment"
+        android:label="Admin Dashboard">
+        <action
+            android:id="@+id/action_admin_to_create_tournament"
+            app:destination="@id/createTournamentFragment" />
+        <action
+            android:id="@+id/action_admin_to_tournament_list"
+            app:destination="@id/tournamentListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/playerDashboardFragment"
+        android:name="com.example.quiz.ui.player.PlayerDashboardFragment"
+        android:label="Player Dashboard">
+        <action
+            android:id="@+id/action_player_to_quiz"
+            app:destination="@id/quizFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createTournamentFragment"
+        android:name="com.example.quiz.ui.admin.CreateTournamentFragment"
+        android:label="Create Tournament" />
+
+    <fragment
+        android:id="@+id/tournamentListFragment"
+        android:name="com.example.quiz.ui.admin.TournamentListFragment"
+        android:label="Tournament List" />
+
+    <fragment
+        android:id="@+id/quizFragment"
+        android:name="com.example.quiz.ui.quiz.QuizFragment"
+        android:label="Quiz" />
+</navigation> 

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "868198279184",
+    "firebase_url": "https://quiz-1de32-default-rtdb.firebaseio.com",
+    "project_id": "quiz-1de32",
+    "storage_bucket": "quiz-1de32.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868198279184:android:003818941febe08e52c295",
+        "android_client_info": {
+          "package_name": "com.example.quiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7JaxM8uq0e51ABk7OemQArxtCEPwsz58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
