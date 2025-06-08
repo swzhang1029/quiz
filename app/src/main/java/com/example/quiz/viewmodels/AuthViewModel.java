@@ -23,12 +23,6 @@ public class AuthViewModel extends ViewModel {
         currentUser = new MutableLiveData<>();
         isLoading = new MutableLiveData<>(false);
         error = new MutableLiveData<>();
-
-        // Check if user is already signed in
-        FirebaseUser firebaseUser = auth.getCurrentUser();
-        if (firebaseUser != null) {
-            loadUserData(firebaseUser.getUid());
-        }
     }
 
     public void signIn(String email, String password) {
@@ -40,18 +34,18 @@ public class AuthViewModel extends ViewModel {
                 if (task.isSuccessful()) {
                     FirebaseUser firebaseUser = task.getResult().getUser();
                     if (firebaseUser != null) {
-                        loadUserData(firebaseUser.getUid());
+                        loadUserData(firebaseUser.getUid(), email);
                     }
                 } else {
                     Log.e(TAG, "Sign in failed", task.getException());
                     error.setValue(task.getException() != null ? 
                         task.getException().getMessage() : "Authentication failed");
+                    isLoading.setValue(false);
                 }
-                isLoading.setValue(false);
             });
     }
 
-    private void loadUserData(String userId) {
+    private void loadUserData(String userId, String email) {
         db.collection("users").document(userId)
             .get()
             .addOnSuccessListener(documentSnapshot -> {
@@ -59,12 +53,19 @@ public class AuthViewModel extends ViewModel {
                 if (user != null) {
                     currentUser.setValue(user);
                 } else {
-                    error.setValue("User data not found");
+                    // If user doc is missing, create it based on email
+                    String role = email.toLowerCase().contains("admin") ? "admin" : "player";
+                    User newUser = new User(userId, email, role);
+                    db.collection("users").document(userId).set(newUser)
+                        .addOnSuccessListener(aVoid -> currentUser.setValue(newUser))
+                        .addOnFailureListener(e -> error.setValue("Failed to create user profile"));
                 }
+                isLoading.setValue(false);
             })
             .addOnFailureListener(e -> {
                 Log.e(TAG, "Error loading user data", e);
                 error.setValue("Failed to load user data");
+                isLoading.setValue(false);
             });
     }
 
