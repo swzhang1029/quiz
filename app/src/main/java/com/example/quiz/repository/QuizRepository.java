@@ -64,6 +64,14 @@ public class QuizRepository {
                 .addOnFailureListener(callback::onError);
     }
 
+    public void deleteTournament(String tournamentId, OnTournamentCallback callback) {
+        firestore.collection("tournaments")
+                .document(tournamentId)
+                .delete()
+                .addOnSuccessListener(aVoid -> callback.onSuccess(null))
+                .addOnFailureListener(callback::onError);
+    }
+
     public void getTournaments(OnTournamentsCallback callback) {
         firestore.collection("tournaments")
                 .orderBy("startDate", Query.Direction.DESCENDING)
