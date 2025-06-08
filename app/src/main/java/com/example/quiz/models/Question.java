@@ -2,8 +2,9 @@ package com.example.quiz.models;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
+import java.io.Serializable;
 
-public class Question {
+public class Question implements Serializable {
     @SerializedName("category")
     private String category;
 

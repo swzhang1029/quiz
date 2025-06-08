@@ -2,8 +2,9 @@ package com.example.quiz.models;
 
 import java.util.Date;
 import java.util.List;
+import java.io.Serializable;
 
-public class Tournament {
+public class Tournament implements Serializable {
     private String tournamentId;
     private String name;
     private String category;
@@ -13,6 +14,7 @@ public class Tournament {
     private String createdBy;
     private List<String> likes;
     private List<Question> questions;
+    private List<String> participants;
 
     public Tournament() {
         // Required empty constructor for Firebase
@@ -100,5 +102,13 @@ public class Tournament {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public List<String> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<String> participants) {
+        this.participants = participants;
     }
 } 
