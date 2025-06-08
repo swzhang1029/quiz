@@ -46,25 +46,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:text="Quiz Management"
+                        android:text="Start Quiz"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/createQuizButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:padding="12dp"
-                        android:text="Create New Quiz"
-                        android:textAllCaps="false" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/viewQuizzesButton"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:id="@+id/startQuizButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
-                        android:text="View All Quizzes"
+                        android:text="Start New Quiz"
                         android:textAllCaps="false" />
 
                 </LinearLayout>
@@ -74,6 +64,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp">
 
@@ -87,31 +78,41 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:text="Player Management"
+                        android:text="Your Progress"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/viewPlayersButton"
+                        android:id="@+id/viewHistoryButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:padding="12dp"
+                        android:text="View Quiz History"
+                        android:textAllCaps="false" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/viewLeaderboardButton"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
-                        android:text="View All Players"
+                        android:text="View Leaderboard"
                         android:textAllCaps="false" />
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/logoutButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:padding="12dp"
-                android:text="Logout"
-                android:textAllCaps="false" />
-
         </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:padding="12dp"
+            android:text="Logout"
+            android:textAllCaps="false" />
 
     </androidx.core.widget.NestedScrollView>
 
