@@ -83,6 +83,22 @@ public class QuizRepository {
                 .addOnFailureListener(callback::onError);
     }
 
+    public void likeTournament(String tournamentId, String userId, OnTournamentCallback callback) {
+        firestore.collection("tournaments")
+                .document(tournamentId)
+                .update("likes", com.google.firebase.firestore.FieldValue.arrayUnion(userId))
+                .addOnSuccessListener(aVoid -> callback.onSuccess(null))
+                .addOnFailureListener(callback::onError);
+    }
+
+    public void unlikeTournament(String tournamentId, String userId, OnTournamentCallback callback) {
+        firestore.collection("tournaments")
+                .document(tournamentId)
+                .update("likes", com.google.firebase.firestore.FieldValue.arrayRemove(userId))
+                .addOnSuccessListener(aVoid -> callback.onSuccess(null))
+                .addOnFailureListener(callback::onError);
+    }
+
     // OpenTDB API Methods
     public void fetchQuestions(int amount, String category, String difficulty, String type,
                              Callback<QuestionResponse> callback) {

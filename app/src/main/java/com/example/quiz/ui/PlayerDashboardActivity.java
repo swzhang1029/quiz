@@ -55,11 +55,11 @@ public class PlayerDashboardActivity extends AppCompatActivity {
             }
             @Override
             public void onLike(Tournament tournament) {
-                // TODO: Implement like logic
+                tournamentViewModel.likeTournament(tournament.getTournamentId(), playerId);
             }
             @Override
             public void onUnlike(Tournament tournament) {
-                // TODO: Implement unlike logic
+                tournamentViewModel.unlikeTournament(tournament.getTournamentId(), playerId);
             }
         });
         binding.playerTournamentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
