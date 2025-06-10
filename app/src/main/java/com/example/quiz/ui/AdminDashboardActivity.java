@@ -4,20 +4,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.quiz.R;
 import com.example.quiz.databinding.ActivityAdminDashboardBinding;
 import com.example.quiz.viewmodels.AuthViewModel;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.example.quiz.ui.adapters.TournamentAdapter;
+import com.example.quiz.models.Tournament;
 import com.example.quiz.viewmodels.TournamentViewModel;
+import java.util.ArrayList;
+import java.util.List;
+import android.app.AlertDialog;
 
 public class AdminDashboardActivity extends AppCompatActivity {
     private ActivityAdminDashboardBinding binding;
-    private TournamentViewModel tournamentViewModel;
     private AuthViewModel authViewModel;
+    private TournamentViewModel tournamentViewModel;
+    private TournamentAdapter tournamentAdapter;
+    private List<Tournament> tournamentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,38 +33,74 @@ public class AdminDashboardActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("Admin Dashboard");
 
-        tournamentViewModel = new ViewModelProvider(this).get(TournamentViewModel.class);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        tournamentViewModel = new ViewModelProvider(this).get(TournamentViewModel.class);
 
+        setupRecyclerView();
         setupViews();
-        observeViewModel();
+        observeTournaments();
     }
 
     private void setupViews() {
-        binding.tournamentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // TODO: Set up RecyclerView adapter
-
-        binding.createTournamentFab.setOnClickListener(v -> {
+        binding.createQuizButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, TournamentEditActivity.class);
             startActivity(intent);
         });
+
+
+        binding.logoutButton.setOnClickListener(v -> {
+            authViewModel.signOut();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        });
     }
 
-    private void observeViewModel() {
-        tournamentViewModel.getTournaments().observe(this, tournaments -> {
-            // TODO: Update RecyclerView adapter
-            binding.emptyView.setVisibility(tournaments.isEmpty() ? View.VISIBLE : View.GONE);
-        });
-
-        tournamentViewModel.getIsLoading().observe(this, isLoading -> {
-            binding.progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        });
-
-        tournamentViewModel.getError().observe(this, error -> {
-            if (error != null) {
-                Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    private void setupRecyclerView() {
+        tournamentAdapter = new TournamentAdapter(tournamentList, new TournamentAdapter.OnTournamentActionListener() {
+            @Override
+            public void onEdit(Tournament tournament) {
+                Intent intent = new Intent(AdminDashboardActivity.this, TournamentEditActivity.class);
+                intent.putExtra("tournamentId", tournament.getTournamentId());
+                startActivity(intent);
+            }
+            @Override
+            public void onDelete(Tournament tournament) {
+                new AlertDialog.Builder(AdminDashboardActivity.this)
+                    .setTitle("Delete Tournament")
+                    .setMessage("Are you sure you want to delete this tournament?")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        tournamentViewModel.deleteTournament(tournament.getTournamentId());
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
             }
         });
+        binding.tournamentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.tournamentsRecyclerView.setAdapter(tournamentAdapter);
+    }
+
+    private void observeTournaments() {
+        tournamentViewModel.getTournaments().observe(this, tournaments -> {
+            tournamentList.clear();
+            if (tournaments != null && !tournaments.isEmpty()) {
+                tournamentList.addAll(tournaments);
+                binding.tournamentsRecyclerView.setVisibility(android.view.View.VISIBLE);
+                binding.emptyView.setVisibility(android.view.View.GONE);
+            } else {
+                binding.tournamentsRecyclerView.setVisibility(android.view.View.GONE);
+                binding.emptyView.setVisibility(android.view.View.VISIBLE);
+            }
+            tournamentAdapter.notifyDataSetChanged();
+        });
+        tournamentViewModel.getError().observe(this, error -> {
+            if (error != null) {
+                android.widget.Toast.makeText(this, "Error: " + error, android.widget.Toast.LENGTH_LONG).show();
+            }
+        });
+        tournamentViewModel.getIsLoading().observe(this, isLoading -> {
+            // Optionally show a loading indicator
+        });
+        tournamentViewModel.loadTournaments();
     }
 
     @Override
@@ -77,11 +118,5 @@ public class AdminDashboardActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        tournamentViewModel.loadTournaments();
     }
 } 

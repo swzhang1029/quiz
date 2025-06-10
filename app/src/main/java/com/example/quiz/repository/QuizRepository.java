@@ -64,6 +64,14 @@ public class QuizRepository {
                 .addOnFailureListener(callback::onError);
     }
 
+    public void deleteTournament(String tournamentId, OnTournamentCallback callback) {
+        firestore.collection("tournaments")
+                .document(tournamentId)
+                .delete()
+                .addOnSuccessListener(aVoid -> callback.onSuccess(null))
+                .addOnFailureListener(callback::onError);
+    }
+
     public void getTournaments(OnTournamentsCallback callback) {
         firestore.collection("tournaments")
                 .orderBy("startDate", Query.Direction.DESCENDING)
@@ -72,6 +80,22 @@ public class QuizRepository {
                     List<Tournament> tournaments = queryDocumentSnapshots.toObjects(Tournament.class);
                     callback.onSuccess(tournaments);
                 })
+                .addOnFailureListener(callback::onError);
+    }
+
+    public void likeTournament(String tournamentId, String userId, OnTournamentCallback callback) {
+        firestore.collection("tournaments")
+                .document(tournamentId)
+                .update("likes", com.google.firebase.firestore.FieldValue.arrayUnion(userId))
+                .addOnSuccessListener(aVoid -> callback.onSuccess(null))
+                .addOnFailureListener(callback::onError);
+    }
+
+    public void unlikeTournament(String tournamentId, String userId, OnTournamentCallback callback) {
+        firestore.collection("tournaments")
+                .document(tournamentId)
+                .update("likes", com.google.firebase.firestore.FieldValue.arrayRemove(userId))
+                .addOnSuccessListener(aVoid -> callback.onSuccess(null))
                 .addOnFailureListener(callback::onError);
     }
 

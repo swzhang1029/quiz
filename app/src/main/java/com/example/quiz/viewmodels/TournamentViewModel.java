@@ -92,4 +92,52 @@ public class TournamentViewModel extends BaseViewModel {
             }
         });
     }
+
+    public void deleteTournament(String tournamentId) {
+        isLoading.setValue(true);
+        error.setValue(null);
+        repository.deleteTournament(tournamentId, new QuizRepository.OnTournamentCallback() {
+            @Override
+            public void onSuccess(Tournament tournament) {
+                loadTournaments();
+            }
+            @Override
+            public void onError(Exception e) {
+                error.postValue(e.getMessage());
+                isLoading.postValue(false);
+            }
+        });
+    }
+
+    public void likeTournament(String tournamentId, String userId) {
+        isLoading.setValue(true);
+        error.setValue(null);
+        repository.likeTournament(tournamentId, userId, new QuizRepository.OnTournamentCallback() {
+            @Override
+            public void onSuccess(Tournament tournament) {
+                loadTournaments();
+            }
+            @Override
+            public void onError(Exception e) {
+                error.postValue(e.getMessage());
+                isLoading.postValue(false);
+            }
+        });
+    }
+
+    public void unlikeTournament(String tournamentId, String userId) {
+        isLoading.setValue(true);
+        error.setValue(null);
+        repository.unlikeTournament(tournamentId, userId, new QuizRepository.OnTournamentCallback() {
+            @Override
+            public void onSuccess(Tournament tournament) {
+                loadTournaments();
+            }
+            @Override
+            public void onError(Exception e) {
+                error.postValue(e.getMessage());
+                isLoading.postValue(false);
+            }
+        });
+    }
 } 

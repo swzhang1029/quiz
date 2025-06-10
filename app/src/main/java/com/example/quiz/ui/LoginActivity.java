@@ -2,6 +2,7 @@ package com.example.quiz.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import com.example.quiz.models.User;
 import com.example.quiz.viewmodels.AuthViewModel;
 
 public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = "LoginActivity";
     private ActivityLoginBinding binding;
     private AuthViewModel viewModel;
 
@@ -46,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = binding.passwordEditText.getText().toString().trim();
 
         if (validateInput(email, password)) {
+            Log.d(TAG, "Attempting login with email: " + email);
             viewModel.signIn(email, password);
         }
     }
@@ -72,14 +75,19 @@ public class LoginActivity extends AppCompatActivity {
 
     private void handleUserChange(User user) {
         if (user != null) {
+            Log.d(TAG, "User logged in successfully. Role: " + user.getRole());
             Intent intent;
             if ("admin".equals(user.getRole())) {
+                Log.d(TAG, "Navigating to AdminDashboardActivity");
                 intent = new Intent(this, AdminDashboardActivity.class);
             } else {
+                Log.d(TAG, "Navigating to PlayerDashboardActivity");
                 intent = new Intent(this, PlayerDashboardActivity.class);
             }
             startActivity(intent);
             finish();
+        } else {
+            Log.d(TAG, "User is null");
         }
     }
 
@@ -91,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void handleError(String error) {
         if (error != null) {
+            Log.e(TAG, "Error during login: " + error);
             Toast.makeText(this, error, Toast.LENGTH_LONG).show();
         }
     }

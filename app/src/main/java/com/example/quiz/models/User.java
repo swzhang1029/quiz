@@ -3,21 +3,22 @@ package com.example.quiz.models;
 public class User {
     private String userId;
     private String email;
-    private String name;
-    private String role; // "admin" or "player"
+    private String role;
+    private String displayName;
+    private int score;
+    private int gamesPlayed;
 
-    public User() {
-        // Required empty constructor for Firebase
-    }
+    // Required empty constructor for Firestore
+    public User() {}
 
-    public User(String userId, String email, String name, String role) {
+    public User(String userId, String email, String role) {
         this.userId = userId;
         this.email = email;
-        this.name = name;
         this.role = role;
+        this.score = 0;
+        this.gamesPlayed = 0;
     }
 
-    // Getters and Setters
     public String getUserId() {
         return userId;
     }
@@ -34,19 +35,39 @@ public class User {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getRole() {
         return role;
     }
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getGamesPlayed() {
+        return gamesPlayed;
+    }
+
+    public void setGamesPlayed(int gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
+    }
+
+    public boolean isAdmin() {
+        return "admin".equals(role);
     }
 } 
