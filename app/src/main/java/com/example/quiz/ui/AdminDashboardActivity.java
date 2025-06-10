@@ -47,13 +47,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.viewQuizzesButton.setOnClickListener(v -> {
-            // TODO: Implement view quizzes functionality
-        });
-
-        binding.viewPlayersButton.setOnClickListener(v -> {
-            // TODO: Implement view players functionality
-        });
 
         binding.logoutButton.setOnClickListener(v -> {
             authViewModel.signOut();
